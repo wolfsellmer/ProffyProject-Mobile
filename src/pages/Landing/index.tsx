@@ -4,10 +4,10 @@ import { useNavigation} from '@react-navigation/native';
 import{RectButton } from 'react-native-gesture-handler';
 
 import styles from  './styles';
-import landingImg from '../../images/landing.png';
-import studyIcon from '../../images/icons/study.png';
-import giveClassesIcon from '../../images/icons/give-classes.png';
-import heartIcon from '../../images/icons/heart.png';
+import landingImg from '../../assets/images/landing.png';
+import studyIcon from '../../assets/images/icons/study.png';
+import giveClassesIcon from '../../assets/images/icons/give-classes.png';
+import heartIcon from '../../assets/images/icons/heart.png';
 
 function Landing(){
     const {navigate} = useNavigation();
