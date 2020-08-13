@@ -21,7 +21,6 @@ function Favorites(){
         <TeacherItem/>
         <TeacherItem/>
         </ScrollView>
-
     </View>
     )
 

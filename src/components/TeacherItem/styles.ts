@@ -24,7 +24,13 @@ const styles = StyleSheet.create({
         marginLeft: 16,
     },
     name:{
-        fontFamily:'Archivo+700Bold',
+        fontFamily:'Archivo_700Bold',
+        color:'#6a6180',
+        fontSize:12,
+        marginTop:4,
+    },
+    subject:{
+        fontFamily:'Archivo_700Bold',
         color:'#6a6180',
         fontSize:12,
         marginTop:4,
@@ -64,6 +70,9 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         alignItems:'center',
         marginRight:8,
+    },
+    favorited:{
+        backgroundColor:'#e33d3d',
     },
     contectButton:{
         backgroundColor: '#04d361',
