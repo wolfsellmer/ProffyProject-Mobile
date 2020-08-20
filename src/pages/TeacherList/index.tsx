@@ -1,42 +1,63 @@
 import React, { useState } from 'react';
-import { View , ScrollView, Text, TextInput} from 'react-native';
-import { RectButton, BorderlessButton } from 'react-native-gesture-handler';
+import { View , ScrollView, Text, AsyncStorage} from 'react-native';
+import { RectButton, BorderlessButton, TextInput } from 'react-native-gesture-handler';
 import api from '../../services/api';
 import TeacherItem, { Teacher } from '../../components/TeacherItem';
 import{Feather} from '@expo/vector-icons';
 import PageHeader from '../../components/PageHeader';
 import styles from './styles';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 function TeacherList(){
-    const [teachers, setTeachers] =  useState([]);
     const [isfiltersVisible, setIsFiltersVisibel] = useState(false);
+    const [teachers, setTeachers] =  useState([]);
+    const [favorites, setFavorites] = useState<number[]>([]);
     const [subject, setSubject] = useState('');
     const [week_day, setWeekDay] = useState('');
     const [time, setTime]= useState('');
-    
-    
-    function handleToggleFiltersVisible(){
-        setIsFiltersVisibel(!isfiltersVisible);
+
+    async function loadFavorites(){
+        AsyncStorage.getItem('@proffy/favorites').then((response)=>{
+            if (response){
+                const favoritedTeacher = JSON.parse(response);
+                const favoritedTeacherIds = favoritedTeacher.map(
+                    (teacher: Teacher)=> teacher.id
+                );
+                setFavorites(favoritedTeacherIds);
+            }
+        });
     }
+    
+    
+    // function handleToggleFiltersVisible(){
+    //     setIsFiltersVisibel(!isfiltersVisible);
+    // }
+
     async function handleFilterSubmit(){
         const response = await api.get('classes', {
             params:{
                 subject,
                 week_day,
                 time,
-            }
+            },
         });
-        setIsFiltersVisibel(false);
+        if (response.data && response.data.length > 0){
+            loadFavorites();
+            setIsFiltersVisibel(false);
+        }
         setTeachers(response.data);
     }
+    useFocusEffect(()=>{
+        loadFavorites();
+    });
 
 
     return (
     <View style={styles.container}>
         <PageHeader title="Proffys disponíveis" 
         headerRigth={(
-            <BorderlessButton onPress={handleToggleFiltersVisible   }>
+            <BorderlessButton onPress={()=>setIsFiltersVisibel(!isfiltersVisible)}>
                 <Feather name="filter" size={20} color="#FFF"/>
             </BorderlessButton>
         )}
@@ -45,7 +66,7 @@ function TeacherList(){
                     <Text style={styles.label}>Matéria</Text>
                         <TextInput style={styles.input}
                         value={subject}
-                        onChangeText={text =>setSubject(text)}
+                        onChangeText={(text) =>setSubject(text)}
                         placeholder="Qual a matéria?"
                         placeholderTextColor="#c1bccc"
                         /> 
@@ -54,7 +75,7 @@ function TeacherList(){
                             <Text style={styles.label}>Dia da Semana</Text>
                                 <TextInput style={styles.input}
                                 value={week_day}
-                                onChangeText={text =>setWeekDay(text)}
+                                onChangeText={(text) =>setWeekDay(text)}
                                 placeholder="Qual o dia?"
                                 placeholderTextColor="#c1bccc"
                             /> 
@@ -63,7 +84,7 @@ function TeacherList(){
                             <Text style={styles.label}>Horário</Text>
                                 <TextInput style={styles.input}
                                 value={time}
-                                onChangeText={text =>setTime(text)}
+                                onChangeText={(text) =>setTime(text)}
                                 placeholder="Qual horário?"
                                 placeholderTextColor="#c1bccc"
                             /> 
@@ -82,8 +103,12 @@ function TeacherList(){
                 paddingBottom:16,
             }}
         >
-        {teachers.map((teacher: Teacher) => {
-            return  <TeacherItem key={teacher.id} teacher={teacher}/>
+        {teachers.length > 0 && teachers.map((teacher: Teacher) => {
+            return (
+                <TeacherItem 
+                key={teacher.id} 
+                teacher={teacher}
+                favorited={favorites.includes(teacher.id)}/>);
         })}               
         </ScrollView>
     </View>

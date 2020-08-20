@@ -11,10 +11,10 @@ import giveClassesIcon from '../../assets/images/icons/give-classes.png';
 import heartIcon from '../../assets/images/icons/heart.png';
 
 function Landing(){
-    const {navigate} = useNavigation();
-    const [totalConnctions, setTotalConnections]= useState(0);
+    const navigation = useNavigation();
+    const [totalConnctions, setTotalConnections]= React.useState(0);
 
-    useEffect(() => {
+    React.useEffect(() => {
         api.get('connections').then(response =>{
             const { total } = response.data;
             setTotalConnections(total);
@@ -22,11 +22,11 @@ function Landing(){
     },[]);
 
     function hendleNavigationToGiveClasses(){
-        navigate('GiveClasses');
+        navigation.navigate('GiveClasses');
     }
 
     function hendleNavigationToStudyPages(){
-        navigate ('Study');
+        navigation.navigate ('Study');
     }
 
 
