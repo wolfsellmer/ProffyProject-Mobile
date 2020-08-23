@@ -8,4 +8,4 @@
 - Lista de Proffys disponivéis;
 - Lista de Proffys favoritos (storage mobile device).
 
-Feat @github/desenv-marcelo-silva
+@github/desenv-marcelo-silva Ajudou no projeto. 
