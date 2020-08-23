@@ -8,4 +8,4 @@
 - Lista de Proffys disponivéis;
 - Lista de Proffys favoritos (storage mobile device).
 
-Feat @desenv-marcelo-silva
+Feat desenv-marcelo-silva
